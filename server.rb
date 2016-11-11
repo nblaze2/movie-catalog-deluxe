@@ -1,5 +1,6 @@
 require "sinatra"
 require "pg"
+require "pry"
 
 set :bind, '0.0.0.0'  # bind to all interfaces
 
@@ -21,19 +22,35 @@ def db_connection
 end
 
 get "/actors" do
-  # @teams = ["Simpson Slammers", "Jetson Jets", "Flintstone Fire", "Griffin Goats"]
-  erb :'actors/index'
+  db_connection do |conn|
+    @actors = conn.exec('SELECT name FROM actors ORDER BY name')
+    erb :'actors/index'
+  end
 end
 
-get "/actors/:id" do
-  # @team_name = params[:team_name]
-  # @team_data = TeamData::ROLL_CALL[@team_name.to_sym]
-  erb :'actors/show'
+get "/actors/:actor_name" do
+  @actor_name = params[:actor_name]
+  db_connection do |conn|
+    @filmography = conn.exec_params('
+    SELECT movies.title, movies.year, cast_members.character
+    FROM actors
+    JOIN cast_members ON actors.id = cast_members.actor_id
+    JOIN movies ON cast_members.movie_id = movies.id
+    WHERE actors.name = ($1) ORDER BY year', [params[:actor_name]]
+    )
+    erb :'actors/show'
+  end
 end
 
 get "/movies" do
-  # @positions = TeamData::ROLL_CALL.values[0].keys
-  erb :'movies/index'
+  db_connection do |conn|
+    @movies = conn.exec('SELECT movies.title, movies.year, movies.rating, genres.name AS genre, studios.name AS studio
+        FROM movies
+        JOIN genres ON movies.genre_id = genres.id
+        JOIN studios ON movies.studio_id = studios.id
+        ORDER BY title')
+    erb :'movies/index'
+  end
 end
 
 get "/movies/:id" do
@@ -47,3 +64,7 @@ get "/movies/:id" do
   #
   erb :'movies/show'
 end
+
+
+set :views, File.join(File.dirname(__FILE__), "views")
+set :public_folder, File.join(File.dirname(__FILE__), "public")

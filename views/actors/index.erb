@@ -1,6 +1,22 @@
-
+<div class="banner">
   <h1>
-    List of Actors:
+    List of Actors and Actresses:
   </h1>
+  <div class="links" align="right">
+    <b><a href="/actors">Back to List Actors</a></b>
+    <b><a href="/movies">Back to the Movies</a></b>
+  </div>
+</div>
 
-  <a href="/movies">To the list of Movies</a>
+  <p>
+  <ul>
+    <% @actors.each do |actor| %>
+      <li><a href="/actors/<%= actor["name"] %>"><%= actor["name"] %></a></li>
+    <% end %>
+  </ul>
+  <p>
+    <div class="bottom_page_links">
+      <div class="links">
+        <b><a href="/movies">To the list of Movies</a>
+      </div>
+    </div>

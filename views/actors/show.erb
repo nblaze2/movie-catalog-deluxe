@@ -1,6 +1,35 @@
+  <div class="banner">
+    <h1 class="actor_banner">
+      <%= @actor_name %>
+    </h1>
+    <div class="links" align="right">
+      <b><a href="/actors">Back to List Actors</a></b>
+      <b><a href="/movies">Back to the Movies</a></b>
+    </div>
+  </div>
 
-  <h1>
-    Details about: <%= @position %>
-  </h1>
+  <table>
+    <tr>
+      <th align="left">Movie</th>
+      <th align="left">Year</th>
+      <th align="left">Character</th>
+    </tr>
 
-  <a href="/actors">Back to List Actors</a>
+    <% @filmography.each do |movie| %>
+
+    <tr>
+      <td><%= movie["title"] %></td>
+      <td><%= movie["year"] %></td>
+      <td><%= movie["character"] %></td>
+    </tr>
+
+    <% end %>
+  </table>
+  <div class="bottom_page_links">
+    <div class="links">
+      <b><a href="/actors">Back to List Actors and Actresses</a></b>
+    </div>
+    <div class="links">
+      <b><a href="/movies">Back to the Movies</a></b>
+    </div>
+  </div>

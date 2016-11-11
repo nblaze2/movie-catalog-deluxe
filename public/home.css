@@ -1,0 +1,63 @@
+body {
+  background-color: #f5f5f5;
+  font-family: sans-serif, Georgia;
+  margin: 0;
+  padding: 0;
+}
+
+.banner {
+  background-color: gold;
+  color: black;
+  margin: 0px;
+  padding: 30px;
+  border-bottom: solid 5px black;
+}
+
+.banner h1 {
+font-size: 30pt;
+font-weight: bold;
+margin: 0;
+}
+
+.links {
+  font-size: 12pt;
+}
+
+.bottom_page_links {
+  background-color: gold;
+  padding: 10px;
+  border-top: solid 2px black;
+}
+
+.actor_banner {
+  background-color: gold;
+  padding: 30px;
+  margin: 0;
+}
+
+
+#genre {
+  padding-left: 35px;
+}
+
+
+table {
+    border-spacing: 40px;
+    border-collapse: separate;
+}
+
+table th {
+  text-align: left;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  color: black;
+}
+
+a:visted {
+  color: black;
+}
