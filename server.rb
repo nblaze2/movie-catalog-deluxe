@@ -53,16 +53,26 @@ get "/movies" do
   end
 end
 
-get "/movies/:id" do
-  # @position = params[:position]
-  # @whole_league = TeamData::ROLL_CALL
-  # @players_by_position = {}
-  #
-  # @whole_league.each_pair do |team, roster|
-  #   @players_by_position[roster[@position.to_sym]] = team
-  # end
-  #
+get "/movies/:movie_name" do
+  @movie = params[:movie_name]
+  db_connection do |conn|
+    @movie_details = conn.exec_params('
+    SELECT movies.title, genres.name AS genre, studios.name AS studio
+    FROM movies
+    JOIN genres ON movies.genre_id = genres.id
+    JOIN studios ON movies.studio_id = studios.id
+    WHERE movies.title = ($1)', [params[:movie_name]]
+    )
+
+    @cast = conn.exec_params('
+    SELECT actors.name, cast_members.character
+    FROM cast_members
+    JOIN actors ON cast_members.actor_id = actors.id
+    JOIN movies ON cast_members.movie_id = movies.id
+    WHERE movies.title = ($1)', [params[:movie_name]]
+    )
   erb :'movies/show'
+  end
 end
 
 

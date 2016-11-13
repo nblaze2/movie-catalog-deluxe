@@ -20,7 +20,7 @@
     <% @movies.each do |movie| %>
 
     <tr>
-      <td><%= movie["title"] %></td>
+      <td><a href="/movies/<%= movie["title"] %>"><%= movie["title"] %></td>
       <td><%= movie["year"] %></td>
       <td><%= movie["rating"] %></td>
       <td><%= movie["genre"] %></td>

@@ -1,6 +1,48 @@
+  <div class="banner">
+    <h1 class="actor_banner">
+      Details about : <%= @movie %>
+    </h1>
+    <div class="links" align="right">
+      <b><a href="/actors">Back to List Actors</a></b>
+      <b><a href="/movies">Back to the Movies</a></b>
+    </div>
+  </div>
 
-  <h1>
-    Details about: <%= @position %>
-  </h1>
+  <table>
+    <tr>
+      <th align="left">Movie</th>
+      <th align="left">Genre</th>
+      <th align="left">Studio</th>
+    </tr>
 
-  <a href="/movies">Back to List Movies</a>
+    <% @movie_details.each do |detail| %>
+
+    <tr>
+      <td><%= detail["title"] %></td>
+      <td><%= detail["genre"] %></td>
+      <td><%= detail["studio"] %></td>
+    </tr>
+
+    <% end %>
+    <tr>
+      <th align="left">Actor/Actress</th>
+      <th align="left">Character</th>
+    </tr>
+
+    <% @cast.each do |member| %>
+    <tr>
+      <td><a href="/actors/<%= member["name"] %>"><%= member["name"] %></td>
+      <td><%= member["character"] %></td>
+    </tr>
+
+    <% end %>
+  </table>
+
+  <div class="bottom_page_links">
+    <div class="links">
+      <b><a href="/actors">Back to List Actors and Actresses</a></b>
+    </div>
+    <div class="links">
+      <b><a href="/movies">Back to the Movies</a></b>
+    </div>
+  </div>
