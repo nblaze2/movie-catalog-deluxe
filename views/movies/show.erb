@@ -1,6 +1,6 @@
   <div class="banner">
     <h1 class="actor_banner">
-      Details about : <%= @movie %>
+      Details about : <%= @movie_details[0]["title"] %>
     </h1>
     <div class="links" align="right">
       <b><a href="/actors">Back to List Actors</a></b>
@@ -31,7 +31,7 @@
 
     <% @cast.each do |member| %>
     <tr>
-      <td><a href="/actors/<%= member["name"] %>"><%= member["name"] %></td>
+      <td><a href="/actors/<%= member["id"] %>"><%= member["name"] %></td>
       <td><%= member["character"] %></td>
     </tr>
 

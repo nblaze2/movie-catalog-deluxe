@@ -22,57 +22,58 @@ def db_connection
 end
 
 get "/actors" do
-  db_connection do |conn|
-    @actors = conn.exec('SELECT name FROM actors ORDER BY name')
-    erb :'actors/index'
+  @actors = db_connection do |conn|
+     conn.exec('SELECT id, name FROM actors ORDER BY name')
   end
+  erb :'actors/index'
 end
 
-get "/actors/:actor_name" do
-  @actor_name = params[:actor_name]
-  db_connection do |conn|
-    @filmography = conn.exec_params('
-    SELECT movies.title, movies.year, cast_members.character
+get "/actors/:id" do
+  @actor_id = params[:id]
+  @filmography = db_connection do |conn|
+    conn.exec_params('
+    SELECT movies.id, movies.title, movies.year, cast_members.character, actors.name
     FROM actors
     JOIN cast_members ON actors.id = cast_members.actor_id
     JOIN movies ON cast_members.movie_id = movies.id
-    WHERE actors.name = ($1) ORDER BY year', [params[:actor_name]]
+    WHERE actors.id = ($1) ORDER BY year', [params[:id]]
     )
-    erb :'actors/show'
   end
+  erb :'actors/show'
 end
 
 get "/movies" do
-  db_connection do |conn|
-    @movies = conn.exec('SELECT movies.title, movies.year, movies.rating, genres.name AS genre, studios.name AS studio
+  @movies = db_connection do |conn|
+    conn.exec('SELECT movies.id, movies.title, movies.year, movies.rating, genres.name AS genre, studios.name AS studio
         FROM movies
         JOIN genres ON movies.genre_id = genres.id
         JOIN studios ON movies.studio_id = studios.id
         ORDER BY title')
-    erb :'movies/index'
   end
+  erb :'movies/index'
 end
 
-get "/movies/:movie_name" do
-  @movie = params[:movie_name]
-  db_connection do |conn|
-    @movie_details = conn.exec_params('
-    SELECT movies.title, genres.name AS genre, studios.name AS studio
+get "/movies/:id" do
+  @movie_id = params[:id]
+  @movie_details = db_connection do |conn|
+    conn.exec_params('
+    SELECT movies.id, movies.title, genres.name AS genre, studios.name AS studio
     FROM movies
     JOIN genres ON movies.genre_id = genres.id
     JOIN studios ON movies.studio_id = studios.id
-    WHERE movies.title = ($1)', [params[:movie_name]]
-    )
-
-    @cast = conn.exec_params('
-    SELECT actors.name, cast_members.character
+    WHERE movies.id = ($1)', [params[:id]]
+  )
+  end
+  @cast = db_connection do |conn|
+    conn.exec_params('
+    SELECT movies.id, actors.id, actors.name, cast_members.character
     FROM cast_members
     JOIN actors ON cast_members.actor_id = actors.id
     JOIN movies ON cast_members.movie_id = movies.id
-    WHERE movies.title = ($1)', [params[:movie_name]]
-    )
-  erb :'movies/show'
+    WHERE movies.id = ($1)', [params[:id]]
+  )
   end
+  erb :'movies/show'
 end
 
 

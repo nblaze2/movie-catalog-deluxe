@@ -1,6 +1,6 @@
   <div class="banner">
     <h1 class="actor_banner">
-      <%= @actor_name %>
+      <%= @filmography[0]["name"] %>
     </h1>
     <div class="links" align="right">
       <b><a href="/actors">Back to List Actors</a></b>
@@ -18,7 +18,7 @@
     <% @filmography.each do |movie| %>
 
     <tr>
-      <td><a href="/movies/<%= movie["title"] %>"><%= movie["title"] %></td>
+      <td><a href="/movies/<%= movie["id"] %>"><%= movie["title"] %></td>
       <td><%= movie["year"] %></td>
       <td><%= movie["character"] %></td>
     </tr>
