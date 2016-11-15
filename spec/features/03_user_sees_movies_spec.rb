@@ -15,8 +15,8 @@ feature 'user sees movies' do
       data_3 = ["The Hunger Games: Catching Fire", 2013, 100, genre_id, studio_id]
       conn.exec_params(sql_query_3, data_3)
 
-      sql_query_4 = "INSERT INTO movies (title, year, genre_id) VALUES ($1, $2, $3) RETURNING id"
-      data_4 = ["Avatar", 2009, genre_id]
+      sql_query_4 = "INSERT INTO movies (title, year, rating, genre_id, studio_id) VALUES ($1, $2, $3, $4, $5) RETURNING id"
+      data_4 = ["Avatar", 2009, 100, genre_id, studio_id]
       conn.exec_params(sql_query_4, data_4)
     end
   end
@@ -25,7 +25,9 @@ feature 'user sees movies' do
     visit "/movies"
     expect(page).to have_content("Avatar")
     expect(page).to have_content("2009")
+    expect(page).to have_content("100")
     expect(page).to have_content("Action & Adventure")
+    expect(page).to have_content("Lionsgate Films")
 
     expect(page).to have_content("The Hunger Games: Catching Fire")
     expect(page).to have_content("2013")
@@ -38,7 +40,6 @@ feature 'user sees movies' do
     visit "/movies"
     first_movie_position = page.body.index("Avatar")
     last_movie_position = page.body.index("The Hunger Games: Catching Fire")
-    expect(first_movie_position).to be < last_movie_position
+    expect(first_movie_position < last_movie_position).to eq(true)
   end
 end
-

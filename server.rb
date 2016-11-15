@@ -57,10 +57,10 @@ get "/movies/:id" do
   @movie_id = params[:id]
   @movie_details = db_connection do |conn|
     conn.exec_params('
-    SELECT movies.id, movies.title, genres.name AS genre, studios.name AS studio
+    SELECT movies.id, movies.title, movies.year, movies.rating, genres.name AS genre, studios.name AS studio
     FROM movies
     JOIN genres ON movies.genre_id = genres.id
-    JOIN studios ON movies.studio_id = studios.id
+    LEFT OUTER JOIN studios ON movies.studio_id = studios.id
     WHERE movies.id = ($1)', [params[:id]]
   )
   end
